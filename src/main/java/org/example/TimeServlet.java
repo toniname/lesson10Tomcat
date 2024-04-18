@@ -13,6 +13,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 
@@ -34,33 +35,25 @@ public class TimeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
-        try {
-            String timeZoneParam = req.getParameter("timezone");
-            ZoneId zoneId;
-            if (timeZoneParam != null && !timeZoneParam.isEmpty()) {
-                zoneId = ZoneId.of(timeZoneParam);
-            } else {
-                zoneId = ZoneId.of("UTC");
-            }
-            LocalDateTime currentTime = LocalDateTime.now(zoneId);
-            String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'"));
-
-            String htmlResponse = "<html><head><title>Current Time</title></head><body>"
-                    + "<h1>Current Time (UTC)</h1>"
-                    + "<p>" + formattedTime + "</p>"
-                    + "</body></html>";
-
-            resp.getWriter().write(htmlResponse);
-
-
-        } catch (IOException e) {
-            logger.severe("IOException occurred while handling request: " + e.getMessage());
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("Error occurred while processing request.");
-            resp.getWriter().close();
+        String timeZoneParam = req.getParameter("timezone");
+        ZoneId zoneId;
+        if (timeZoneParam != null && !timeZoneParam.isEmpty()) {
+            zoneId = ZoneId.of(timeZoneParam);
+        } else {
+            zoneId = ZoneId.of("UTC");
         }
+        LocalDateTime currentTime = LocalDateTime.now(zoneId);
+        String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'"));
+
+
+        WebContext context = new WebContext(req, resp, getServletContext(), req.getLocale());
+        context.setVariable("timeZone", zoneId.getId());
+        context.setVariable("formattedTime", formattedTime);
+        templateEngine.process("time", context, resp.getWriter());
+
+
     }
 }
