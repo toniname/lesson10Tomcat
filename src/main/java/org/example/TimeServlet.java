@@ -74,7 +74,7 @@ public class TimeServlet extends HttpServlet {
         LocalDateTime currentTime = LocalDateTime.now(zoneId);
         String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'"));
 
-        // Створіть контекст для рендерингу
+        // Створити контекст для рендерингу
         WebContext context = new WebContext(req, resp, getServletContext(), req.getLocale());
         context.setVariable("timeZone", zoneId.getId());
         context.setVariable("formattedTime", formattedTime);
