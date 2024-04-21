@@ -2,7 +2,6 @@ package org.example;
 
 
 import org.thymeleaf.TemplateEngine;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -13,10 +12,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-
-
 import org.thymeleaf.context.WebContext;
-
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 
