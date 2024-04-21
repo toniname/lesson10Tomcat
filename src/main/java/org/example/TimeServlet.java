@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Logger;
+
 
 import org.thymeleaf.context.WebContext;
 
@@ -22,8 +22,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @WebServlet("/time")
 public class TimeServlet extends HttpServlet {
-
-    static Logger logger = Logger.getLogger(TimeServlet.class.getName());
     private static final String LAST_TIMEZONE_COOKIE = "lastTimezone";
     private TemplateEngine templateEngine;
 
@@ -37,8 +35,6 @@ public class TimeServlet extends HttpServlet {
         templateResolver.setCharacterEncoding("UTF-8");
 
         templateEngine.setTemplateResolver(templateResolver);
-
-
     }
 
     @Override
@@ -98,6 +94,4 @@ public class TimeServlet extends HttpServlet {
         }
         return null;
     }
-
-
 }
